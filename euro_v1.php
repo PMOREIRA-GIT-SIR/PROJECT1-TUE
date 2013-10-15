@@ -16,11 +16,9 @@ $xpto = new CKeyGen();
 	?>
 	<!-- list of numbers -->
 		<?php
-		echo $xpto->key2UL("numbers", $xpto->numbers);
-		?>
-	<!-- list of stars -->
-		<?php
-		echo $xpto->key2UL("stars", $xpto->stars);
+		echo $xpto->keyAsHTML();
+		$xpto->genKey();
+		echo $xpto->keyAsHTML();
 		?>
 </body>
 		

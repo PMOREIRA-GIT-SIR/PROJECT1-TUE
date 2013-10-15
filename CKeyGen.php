@@ -13,18 +13,25 @@ class CKeyGen {
 	public $stars = array();
 	
 	public function __construct() {
+		$this->genKey();
+	}
+	
+	public function genKey() {
 		$extNumbers = new CKeyExtractor(CKeyGen::NN, CKeyGen::MINN, CKeyGen::MAXN);
 		$extStars = new CKeyExtractor(CKeyGen::NS, CKeyGen::MINS, CKeyGen::MAXS);
 		
 		$this->numbers 	= $extNumbers->extract();
 		$this->stars 	= $extStars->extract();
-		
-		//var_dump($this->numbers);
-		//echo("<br/>");
-		//var_dump($this->stars);
+	}
+	public function keyAsHTML() {
+		$html = "<div>";
+		$html .= $this->key2UL("numbers", $this->numbers);
+		$html .= $this->key2UL("stars", $this->stars);
+		$html .= "</div>";
+		return $html;
 	}
 	
-	public function key2UL($class,$key) {
+	private function key2UL($class,$key) {
 		$htmlUL = "";
 		$htmlUL .= "<ul class='$class'>";
 		foreach ($key as $value) {
