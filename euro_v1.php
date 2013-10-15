@@ -19,6 +19,7 @@ $xpto = new CKeyGen();
 		echo $xpto->keyAsHTML();
 		$xpto->genKey();
 		echo $xpto->keyAsHTML();
+		$xpto->keyAsXML();
 		?>
 </body>
 		

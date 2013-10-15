@@ -31,6 +31,19 @@ class CKeyGen {
 		return $html;
 	}
 	
+	public function keyAsXML() {
+		$xml = new SimpleXMLElement("<chave></chave>");
+		$xmlN = $xml->addChild("numeros");
+		$xmlS = $xml->addChild("estrelas");
+		foreach($this->numbers as $thenumber) {
+			$xmlN->addChild("num",$thenumber);
+		}
+		foreach($this->stars as $thestar) {
+			$xmlS->addChild("num",$thestar);
+		}
+		echo $xml->asXML();
+	}
+	
 	private function key2UL($class,$key) {
 		$htmlUL = "";
 		$htmlUL .= "<ul class='$class'>";
