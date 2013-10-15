@@ -41,7 +41,7 @@ class CKeyGen {
 		foreach($this->stars as $thestar) {
 			$xmlS->addChild("num",$thestar);
 		}
-		echo $xml->asXML();
+		return $xml->asXML();
 	}
 	
 	private function key2UL($class,$key) {
