@@ -1,0 +1,52 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="em_style.css"/>
+		<script src="JQuery/jquery-1.10.2.min.js"></script>
+		<script>
+			$(document).ready( function () {
+				$("#bgetkey").click ( function () {
+					//var out = $("#output");
+					//var hola = $("<h2/>");
+					//hola.html("ola");
+					//out.append(hola);
+					
+					// $("#output").append($("<h2/>").html("ola"));
+					
+					//
+					$.ajax(
+						{
+							dataType : "json",
+							url : "http://alunos.estg.ipvc.pt/~pmoreira/KEYSERVER/KeyServerJSON.php",
+							success : function (dados) {
+								var div = $("<div/>");
+								
+								var uln = $("<ul/>");
+								uln.addClass("numbers");
+								for(var i=0; i<dados.numbers.length; i++) {
+									uln.append($("<li/>").html(dados.numbers[i]));
+								}
+								
+								var uls = $("<ul/>");
+								uls.addClass("stars");
+								for(var i=0; i<dados.stars.length; i++) {
+									uls.append($("<li/>").html(dados.stars[i]));
+								}
+								div.append(uln);
+								div.append(uls);
+								$("#output").append(div);
+								
+							}
+						}
+					);
+					
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<h1>EuroMilhões</h1>
+		<input type="button" value="Obter Chave" id="bgetkey"/>
+		<div id="output">
+		</div>
+	</body>
+</html>

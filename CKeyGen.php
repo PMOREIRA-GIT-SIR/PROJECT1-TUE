@@ -1,96 +1,125 @@
 <?php
-
 class CKeyGen {
 	
-	const NN = 5;
-	const NS = 2;
-	const MINN = 1;
-	const MAXN = 50;
-	const MINS = 1;
-	const MAXS = 11;
+	const NN = 5; 		// number of numbers
+	const NS = 2;		// number of stars
 	
-	public $numbers = array();
-	public $stars = array();
+	const MINN = 1;		// min number
+	const MAXN = 50;		// max number
 	
+	const MINS = 1;		// min star
+	const MAXS = 11;		// max star
+	
+	
+	public $numbers;		// array with the numbers
+	public $stars;		// array with the stars
+	
+	// constructor
 	public function __construct() {
-		$this->genKey();
+		$this->regenerate();
 	}
 	
-	public function genKey() {
-		$extNumbers = new CKeyExtractor(CKeyGen::NN, CKeyGen::MINN, CKeyGen::MAXN);
-		$extStars = new CKeyExtractor(CKeyGen::NS, CKeyGen::MINS, CKeyGen::MAXS);
-		
-		$this->numbers 	= $extNumbers->extract();
-		$this->stars 	= $extStars->extract();
-	}
-	public function keyAsHTML() {
-		$html = "<div>";
-		$html .= $this->key2UL("numbers", $this->numbers);
-		$html .= $this->key2UL("stars", $this->stars);
-		$html .= "</div>";
-		return $html;
+	public function regenerate() {
+		$extractorN = new CKeyExtractor(CKeyGen::NN, CKeyGen::MINN, CKeyGen::MAXN);
+		$this->numbers = $extractorN -> extractor();
+		$extractorS = new CKeyExtractor(CKeyGen::NS, CKeyGen::MINS, CKeyGen::MAXS);
+		$this->stars = $extractorS ->extractor();
 	}
 	
-	public function keyAsXML() {
-		$xml = new SimpleXMLElement("<chave></chave>");
-		$xmlN = $xml->addChild("numeros");
-		$xmlS = $xml->addChild("estrelas");
+	function key2HTML() {
+		$html = "";
+		// first list - numbers
+		$html .= "<ul class='numbers'>";
+		// iterate over all numbers
 		foreach($this->numbers as $thenumber) {
-			$xmlN->addChild("num",$thenumber);
+			$html .= "<li>".$thenumber."</li>";
 		}
+		$html .= "</ul>";
+		
+		$html .= "<ul class='stars'>";
+		// iterate over all stars
 		foreach($this->stars as $thestar) {
-			$xmlS->addChild("num",$thestar);
+			$html .= "<li>".$thestar."</li>";
 		}
-		return $xml->asXML();
-	}
+		$html .= "</ul>";
+		return $html;
+		
+	} 
+	function key2XHTML() {
+		$xhtml = new SimpleXMLElement("<div/>");
+		// first list - numbers
+		$uln = $xhtml->addChild("ul");
+		$uln->addAttribute("class","numbers");
+		// iterate over all numbers
+		foreach($this->numbers as $thenumber) {
+			$uln->addChild("li",$thenumber);
+		}
+		$uls = $xhtml->addChild("ul");
+		$uls->addAttribute("class","stars");
+		// iterate over all numbers
+		foreach($this->stars as $thestar) {
+			$uls->addChild("li",$thestar);
+		}
+		
+		return $xhtml->asXML();
+		
+	} 
 	
-	private function key2UL($class,$key) {
-		$htmlUL = "";
-		$htmlUL .= "<ul class='$class'>";
-		foreach ($key as $value) {
-			$htmlUL .= "<li>$value</li>";
-		}
-		$htmlUL .= "</ul>";
-		return $htmlUL;
+	public function KeyAsJSON() {
+		return json_encode($this);
 	}
+		
+		
+	public function key2XML() {
+		$xml = new SimpleXMLElement("<key/>");
+		// first list - numbers
+		$uln = $xml->addChild("numbers");
+		// iterate over all numbers
+		foreach($this->numbers as $thenumber) {
+			$uln->addChild("num",$thenumber);
+		}
+		$uls = $xml->addChild("stars");
+		// iterate over all numbers
+		foreach($this->stars as $thestar) {
+			$uls->addChild("num",$thestar);
+		}
+		
+		return $xml->asXML();
+		
+	} 
+	
 }
 
 class CKeyExtractor {
 	
-	private $mynum;
-	private $mymax;
-	private $mymin;
-	
 	public $key;
+	public $_nel;
+	public $_min;
+	public $_max;
 	
-	public function __construct($num, $min, $max) {
-		$this->mynum = $num;
-		$this->mymin = $min;
-		$this->mymax = $max;
-		$this->extract();
+	public function __construct($nel,$min,$max) {
+		$this->_nel = $nel;
+		$this->_min = $min;
+		$this->_max = $max;
+		//$this->extractor();
 	}
 	
-	public function extract() {
-		
-		// fill the bag
-		$bag = array();
-		$nels =  $this->mymax - $this->mymin + 1;
-		for($i=0; $i < $nels ; $i++) {
-			$bag[$i] = $this->mymin + $i;
+	function extractor() {
+		$bagofnumbers = array();
+		$range = $this->_max - $this->_min + 1;
+		for ($i=0; $i<$range; $i++) {
+			$bagofnumbers[$i] = $i + $this->_min;
 		}
-		// extracts
-		$this->key = array();		// empty array;
-		for($i=0; $i<$this->mynum; $i++) {
-			$ridx = rand(0,count($bag)-1);
-			$this->key[] = $bag[$ridx];
-			array_splice($bag,$ridx,1);
+		for ($k=0; $k<$this->_nel; $k++) {
+			 $idx = rand(0,count($bagofnumbers)-1);
+			 $key[] = $bagofnumbers[$idx];
+			 array_splice($bagofnumbers,$idx,1);
 		}
-		// sorts
-		sort($this->key);
-		// returns the sorted key
-		return($this->key);
+		sort($key);
+		//var_dump($key);
+		return $key;
 	}
+	
 }
-
-
+//$keygenerator = new CKeyGen();
 ?>

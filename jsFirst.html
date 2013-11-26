@@ -1,0 +1,64 @@
+<html>
+	<head>
+		<style>
+			body {
+				font-size:20px;
+			}
+			.lagarto {
+				color:green;
+				font-size: 50px;
+			}
+			.lampiao {
+				color:red;
+				font-size: 0.5em;
+			}
+			.fcp {
+				color:blue;
+			}
+		</style>
+		<script src="JQuery/jquery-1.10.2.min.js"></script>
+		<script>
+		
+		$(document).ready( function () {
+			//debugger;
+			alert("iniciar");
+			
+			$("#bot").click( function () {
+				$("h2").toggleClass(false);
+				$("h2").toggleClass("lagarto");
+			});
+			//elementosp = document.getElementsByTagName("p");
+			//jQuery("p").html("vamos embora");
+			
+			//elementoaaa = document.getElementById("aaa");
+			//$("#aaa").html("xpto");
+			
+			$("#aaa em").html("olé");
+			
+			$("#aaa, h1").click( function () { alert("ola");});
+			
+			//for(var i=0; i < elementosp.length ; i++) {
+			//	elementosp[i].innerHTML = "vamos embora";
+			//}
+			
+			//elementoaaa.innerHTML = "xpto";
+			//elementoaaa.onclick = dizola;
+		
+		});
+		
+		
+		function dizola(element) {
+			alert(element.innerHTML);
+		}
+		</script>
+	</head>
+	<body>
+		<h2 class="fcp">Porto!!!</h2>
+		<h2 class="lampiao"> Benfica!!! </h2>
+		<h2 class="lagarto"> Sporting!!! </h2>
+		<p id="aaa">primeira <em> ola </em> página</p>
+		<h1> ola <em> ola </em></h1>
+		<p> sir </p>
+		<h1 id="bot"> CLICA-ME </h1>
+	</body>
+</html>
