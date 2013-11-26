@@ -3,49 +3,121 @@
 		<link rel="stylesheet" href="em_style.css"/>
 		<script src="JQuery/jquery-1.10.2.min.js"></script>
 		<script>
+			var count = 0;
 			$(document).ready( function () {
-				$("#bgetkey").click ( function () {
-					//var out = $("#output");
-					//var hola = $("<h2/>");
-					//hola.html("ola");
-					//out.append(hola);
-					
-					// $("#output").append($("<h2/>").html("ola"));
-					
-					//
+				$("#bclear").click ( function () {
+					$("#output").html("");
+				});
+				
+				$(".bget").click (function() {
+					//alert($(this).attr("id"));
+					count++;
+					if ($(this).attr("id") == "bgetkey1" ) {
+						theurl = "http://alunos.estg.ipvc.pt/~pmoreira/KEYSERVER/KeyServerJSON.php";
+					} else {
+						theurl = "http://localhost/SIR1213/EM_KEYGEN_TUE/KeyServerJSON.php";
+					}
 					$.ajax(
 						{
 							dataType : "json",
-							url : "http://alunos.estg.ipvc.pt/~pmoreira/KEYSERVER/KeyServerJSON.php",
-							success : function (dados) {
+							url : theurl,
+							async : true,
+							// data : {clicks : count},
+							cache : false,
+							success : function (data) {
+								// data will be the object that results from the JSON answer 
+								
+								// create a new div element
 								var div = $("<div/>");
 								
+								// create a new list UL for the numbers with class "numbers"
 								var uln = $("<ul/>");
 								uln.addClass("numbers");
-								for(var i=0; i<dados.numbers.length; i++) {
-									uln.append($("<li/>").html(dados.numbers[i]));
+								// iterate the data.numbers array
+								// creating a new LI element for each number
+								// and append it to the list
+
+								for(var i=0; i<data.numbers.length; i++) {
+									uln.append($("<li/>").html(data.numbers[i]));
 								}
 								
+								// create a new list UL for the stars with class "stars"
 								var uls = $("<ul/>");
 								uls.addClass("stars");
-								for(var i=0; i<dados.stars.length; i++) {
-									uls.append($("<li/>").html(dados.stars[i]));
+								// iterate the data.stars array
+								// creating a new LI element for each star
+								// and append it to the list
+								for(var i=0; i<data.stars.length; i++) {
+									uls.append($("<li/>").html(data.stars[i]));
 								}
+								
+								// append the lists into the div
 								div.append(uln);
 								div.append(uls);
+								
+								// append the div to the output div
 								$("#output").append(div);
 								
 							}
 						}
 					);
 					
-				})
+				});
+
+				/*
+				$("#bgetkey").click ( function () {
+					
+					$.ajax(
+						{
+							dataType : "json",
+							url : "http://alunos.estg.ipvc.pt/~pmoreira/KEYSERVER/KeyServerJSON.php",
+							success : function (data) {
+								// data will be the object that results from the JSON answer 
+								
+								// create a new div element
+								var div = $("<div/>");
+								
+								// create a new list UL for the numbers with class "numbers"
+								var uln = $("<ul/>");
+								uln.addClass("numbers");
+								// iterate the data.numbers array
+								// creating a new LI element for each number
+								// and append it to the list
+
+								for(var i=0; i<data.numbers.length; i++) {
+									uln.append($("<li/>").html(data.numbers[i]));
+								}
+								
+								// create a new list UL for the stars with class "stars"
+								var uls = $("<ul/>");
+								uls.addClass("stars");
+								// iterate the data.stars array
+								// creating a new LI element for each star
+								// and append it to the list
+								for(var i=0; i<data.stars.length; i++) {
+									uls.append($("<li/>").html(data.stars[i]));
+								}
+								
+								// append the lists into the div
+								div.append(uln);
+								div.append(uls);
+								
+								// append the div to the output div
+								$("#output").append(div);
+								
+							}
+						}
+					);
+					
+				}); */
 			})
 		</script>
 	</head>
 	<body>
 		<h1>EuroMilhões</h1>
-		<input type="button" value="Obter Chave" id="bgetkey"/>
+		<input type="button" value="Obter Chave 1" id="bgetkey1" class="bget"/>
+		<input type="button" value="Obter Chave 2" id="bgetkey2" class="bget"/>
+		<input type="button" value="Apagar Chaves" id ="bclear"/>
 		<div id="output">
 		</div>
 	</body>
